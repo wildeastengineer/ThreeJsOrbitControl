@@ -1,10 +1,10 @@
 import getEventListener from './EventListener/EventListenerFactory';
 
 class OrbitControl {
-    constructor() {
-        console.log('Hello, OrbitControl');
-
-        this.eventListener = getEventListener();
+    constructor(params) {
+        this.eventListener = getEventListener({
+            domElement: params.domElement
+        });
     }
 }
 

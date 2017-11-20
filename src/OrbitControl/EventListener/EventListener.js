@@ -1,9 +1,10 @@
 import Observer from './Observer';
 
 class EventListener extends Observer {
-    constructor() {
-        console.log('EventListener constructor');
-        super();
+    constructor(params) {
+        super(params);
+
+        this.domElement = params.domElement;
     }
 }
 

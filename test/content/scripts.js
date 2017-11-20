@@ -18,7 +18,10 @@
         const object = getObjectMesh();
         const camera = getCamera(windowSize);
 
-        new OrbitControl.default(camera, {});
+        new OrbitControl.default({
+            camera,
+            domElement: renderer.domElement
+        });
 
         scene.background = new THREE.Color(0xffffff);
 

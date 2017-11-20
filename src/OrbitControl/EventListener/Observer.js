@@ -1,6 +1,5 @@
 class Observer {
     constructor() {
-        console.log('Observer constructor');
         this.observers = {};
     }
 
