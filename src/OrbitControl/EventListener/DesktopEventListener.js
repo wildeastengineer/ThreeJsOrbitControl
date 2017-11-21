@@ -47,10 +47,6 @@ class DesktopEventListener extends EventListener {
         this.registerEventHandlers(this.domElement, document);
     }
 
-    destructor() {
-        this.removeEventHandlers(this.domElement, document);
-    }
-
     registerEventHandlers(domElement, document) {
         this.mouseDownHandler = this.mouseDownHandler.bind(this);
         this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
@@ -60,16 +56,19 @@ class DesktopEventListener extends EventListener {
         domElement.addEventListener('contextmenu', this.contextMenuHandler, this.useEventCapture);
         document.addEventListener('mousemove', this.mouseMoveHandler, this.useEventCapture);
         document.addEventListener('mouseup', this.mouseUpHandler, this.useEventCapture);
-    };
+    }
 
     removeEventHandlers(domElement, document) {
         domElement.removeEventListener('mousedown', this.mouseDownHandler, this.useEventCapture);
         domElement.removeEventListener('contextmenu', this.contextMenuHandler, this.useEventCapture);
         document.removeEventListener('mousemove', this.mouseMoveHandler, this.useEventCapture);
         document.removeEventListener('mouseup', this.mouseUpHandler, this.useEventCapture);
-    };
+    }
 
     mouseDownHandler(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
         const coordinates = getCursorCoordinates(event);
         const mouseButtonName = getMouseButtonName(event);
 
@@ -77,7 +76,7 @@ class DesktopEventListener extends EventListener {
         this.state = getActionByMouseButtonName(mouseButtonName);
     }
 
-    static contextMenuHandler(event) {
+    contextMenuHandler(event) {
         event.preventDefault();
         event.stopPropagation();
     }
@@ -100,7 +99,26 @@ class DesktopEventListener extends EventListener {
     }
 
     triggerEvent(state, delta) {
-
+        switch (state) {
+            case CONTROL_ACTION.DRAG:
+                this.fireDrag({
+                    x: delta.x,
+                    y: delta.y
+                });
+                break;
+            case CONTROL_ACTION.ROTATE:
+                this.fireRotate({
+                    x: delta.x,
+                    y: delta.y
+                });
+                break;
+            case CONTROL_ACTION.ZOOM:
+                this.fireZoom({
+                    x: delta.x,
+                    y: delta.y
+                });
+                break;
+        }
     }
 }
 
